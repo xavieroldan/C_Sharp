@@ -24,7 +24,7 @@ namespace ActivitatGrupal1
             En el cas de no voler jugar apareix una sortida del tipus: “Laura..Un altre dia será…”
              */
 
-            string answer = string.Empty, playerName = string.Empty;
+            string answer = string.Empty, playerName = string.Empty, textAttempt = string.Empty;
             int attempts, secretNum, playerNum, contAttempts;
             string[] textNum =
              {
@@ -100,13 +100,17 @@ namespace ActivitatGrupal1
             //Try to get the result
             secretNum = rnd.Next(1, 10);
             contAttempts = attempts;
-            Console.WriteLine("Tienes {0} intentos para adivinar el número entre el 1 y el 10",textNum[attempts]);
+            textAttempt = (attempts==1) ? "intento" :"intentos";
+
+            Console.WriteLine("Tienes {0} {1} para adivinar el número entre el 1 y el 10"
+                ,textNum[attempts], textAttempt);
 
             for (int i = 1; i <= attempts; i++)
             {
+                textAttempt = (contAttempts == 1) ? "intento" : "intentos";
                 Console.WriteLine("¿Cuál es el número?");
                 try
-                {
+                {                    
                     playerNum = Convert.ToInt32(Console.ReadLine());
                     if(playerNum==secretNum)
                     {
@@ -121,15 +125,19 @@ namespace ActivitatGrupal1
                     else
                     {
                         contAttempts--;
+                        textAttempt = (contAttempts == 1) ? "intento" : "intentos";
                         Console.WriteLine(
-                            "{0}: no has acertado. Tienes {1} intentos disponibles.", playerName, textNum[contAttempts]);
+                            "{0}: no has acertado. Tienes {1} {2} disponibles."
+                            , playerName, textNum[contAttempts], textAttempt);
                     }
                 }
                 catch (Exception)
                 {
                     contAttempts--;
+                    textAttempt = (contAttempts == 1) ? "intento" : "intentos";
                     Console.WriteLine(
-                        "No indicaste una respuesta correcta. Tienes {1} intentos disponibles.", textNum[contAttempts]);                    
+                        "No indicaste una respuesta correcta. Tienes {0} {1} disponibles."
+                        , textNum[contAttempts], textAttempt);                    
                 }                
             }
             if (isWinner==true)
@@ -139,8 +147,10 @@ namespace ActivitatGrupal1
             }
             else
             {
+                textAttempt = (attempts == 1) ? "intento" : "intentos";
                 Console.WriteLine(
-                    "{0}: te has pasado de intentos...teníamos {1} intentos...", playerName,textNum[attempts]);
+                    "Te has pasado de intentos {0}...teníamos {1} {2}..."
+                    , playerName,textNum[attempts], textAttempt);
             }
 
             //Exit menu

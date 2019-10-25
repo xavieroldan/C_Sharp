@@ -130,10 +130,65 @@ namespace JuegoDeLaVida
             return cellState;
         }
 
-        static int vertexChanges(int x, int y, int[,] matrix) 
+        static int vertexChanges(int x, int y, int[,] matrixInput) 
         {
+            // Matrix always is square
+            int alive = 0, xToLook, yToLook, cellState = 0;
+            int n = matrix.GetLength(0);
+            int[,] spinClock = new int[8, 2] {
+                {-1,-1}
+                , {0, -1}
+                , { 1,-1}
+                , { 1,0}
+                , { 1,1}
+                , { 0,1}
+                , { -1,1}
+                , { -1,0}
+            };
 
-            return 0;
+            //if (|| ||  || x == n & y == n)
+            if (x == 0 && y == 0) 
+            {
+                //Top left
+                for (int i = 3; i <= 5; i++)
+                {
+                    //TODO: put all this FShit in a function
+                    //Count alive cells
+                    for (int j = 0; j < spinClock.Length; j++)
+                    {
+                        xToLook = spinClock[j, 0] + x;
+                        yToLook = spinClock[j, 1] + y;
+                        if (matrixInput[xToLook, yToLook] == 1)
+                        {
+                            alive++;
+                        }
+                    }
+
+                }                                            
+
+            }
+            else if (x == n && y == 0)
+            {
+                //Top right
+                for (int i = 5; i <= 7; i++)
+                {
+
+                }
+            }
+            else if (x == 0 && y == n)
+            {
+                //Bottom left
+                for (int i = 1; i <= 3; i++)
+                {
+
+                }
+            } 
+            else
+            {
+                //Bottom right 
+                //Manual sequence 7,0 and 1                
+            }
+                return 0;
         }
     }
 

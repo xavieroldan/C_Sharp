@@ -12,14 +12,32 @@ namespace CronoCode
         static void Main(string[] args)
         {
             DateTime timeStart = DateTime.Now;
+            //Start 
 
             //My code here
-            Thread.Sleep(2000);
+            int n;
+            Arra[] su
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //End crono
             DateTime timeEnd = DateTime.Now;
-            TimeSpan timeExpend = new TimeSpan(timeStart.Ticks - timeEnd.Ticks);
-
-            Console.WriteLine(timeExpend.ToString());
+            TimeSpan timeExpend = new TimeSpan(timeEnd.Ticks - timeStart.Ticks) ;
+            Console.WriteLine("{0:F2} Miliseconds", timeExpend.TotalMilliseconds);
             Console.ReadKey();
         }
     }

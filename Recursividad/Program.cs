@@ -58,19 +58,25 @@ namespace Recursividad
             //Console.WriteLine("->"+myProgress(4));
 
             //
-            for (int i = 1; i <= 18; i++)
-            {
-                Console.WriteLine("Euler precisión {0}: {1}",i, eulerNum(i));
-            }
-            
+            //for (int i = 1; i <= 18; i++)
+            //{
+            //    Console.WriteLine("Euler precisión {0}: {1}",i, eulerNum(i));
+            //}
+
+            //mult5(10);
+
+            //multTableCore(10, 7);
+
+            multTable();
+
 
             Console.ReadKey();
         }
 
         static int calculoSuma(int n)
         {
-            if(n==1) { return 1; }
-            Console.WriteLine("el valor de n es "+n);
+            if (n == 1) { return 1; }
+            Console.WriteLine("el valor de n es " + n);
             return n + calculoSuma(n - 1);
         }
         static double calculoFactorial(double n)
@@ -87,28 +93,72 @@ namespace Recursividad
         }
 
         static int calculoFibonacci(int n)
-        {            
+        {
             if (n == 1 || n == 0) { return 1; }
             return calculoFibonacci(n - 1) + calculoFibonacci(n - 2);
         }
 
-        static int pares (int n)
+        static int pares(int n)
         {
-            if (n == 1) { return 2;}            
+            if (n == 1) { return 2; }
             return 2 + pares(n - 1);
         }
 
-        static int myProgress (int n)
+        static int myProgress(int n)
         {
-            if(n == 1) { return 1; }
+            if (n == 1) { return 1; }
             return myProgress(n - 1) * 2;
         }
 
-        static double eulerNum (double n)
+        static double eulerNum(double n)
         {
             if (n == 1) { return 1; }
-            return (1 / calculoFactorial((n - 1))) + eulerNum (n - 1);
+            return (1 / calculoFactorial((n - 1))) + eulerNum(n - 1);
         }
 
+        static int mult5(int n)
+        {
+            if (n == 1)
+            {
+                Console.WriteLine("5");
+                return 5;
+            }
+            int output = mult5(n - 1) + 5;
+            Console.WriteLine(output);
+            return output;
+        }
+
+        static int multTableCore(int n, int value)
+        {
+            if (n == 1 || n==0)
+            {
+                Console.WriteLine("{0} x 1 = {0}",value);
+                return value;
+            }
+            int output = multTableCore(n - 1, value) + value;
+            Console.WriteLine("{0} x {1} = {2}",value, n, output);
+            return output;
+        }
+
+        static void multTable()
+        {
+            bool isVerified = false, isExiting= false;
+            int value = 0; ;
+           
+                while (!isVerified)
+                {
+                    try
+                    {
+                        Console.WriteLine("¿Qué tabla quieres ver?");
+                        value = Convert.ToInt32(Console.ReadLine());
+                        isVerified = true;
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Indica un valor correcto.");
+                    }
+                }                    
+            multTableCore(10, value);                 
+            }
     }
 }

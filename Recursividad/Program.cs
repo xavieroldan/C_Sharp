@@ -142,7 +142,7 @@ namespace Recursividad
 
         static void multTable()
         {
-            bool isVerified = false, isExiting= false;
+            bool isVerified = false;
             int value = 0; ;
            
                 while (!isVerified)

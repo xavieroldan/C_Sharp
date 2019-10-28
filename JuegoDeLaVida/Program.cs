@@ -134,7 +134,7 @@ namespace JuegoDeLaVida
         {
             // Matrix always is square
             int alive = 0, xToLook, yToLook, cellState = 0;
-            int n = matrix.GetLength(0);
+            int n = matrixInput.GetLength(0);
             int[,] spinClock = new int[8, 2] {
                 {-1,-1}
                 , {0, -1}
@@ -146,7 +146,7 @@ namespace JuegoDeLaVida
                 , { -1,0}
             };
 
-            //if (|| ||  || x == n & y == n)
+            
             if (x == 0 && y == 0) 
             {
                 //Top left
@@ -163,9 +163,7 @@ namespace JuegoDeLaVida
                             alive++;
                         }
                     }
-
-                }                                            
-
+                }   
             }
             else if (x == n && y == 0)
             {

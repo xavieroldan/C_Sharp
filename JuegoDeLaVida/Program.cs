@@ -27,6 +27,7 @@ namespace JuegoDeLaVida
             string cell = "@ ";
 
             //---------------------------------Game of Life-------------------------------------
+
             //Matrix random fill
             for (int i = 0; i < n; i++)
             {
@@ -56,8 +57,8 @@ namespace JuegoDeLaVida
 
                     if (x == 0 && y == 0 || x == n && y == 0 || x == 0 && y == n || x == n & y == n)
                     {
-                        //TODO: Vertex
-                        matrixFuture[x, y] = vertexChanges(x, y, matrix);
+                        //Vertex
+                        matrixFuture[x, y] = VertexChanges(x, y, matrix,spinClock);
 
                     }
                     else if (
@@ -67,13 +68,19 @@ namespace JuegoDeLaVida
                         || y == n && (x != 0 || x != n)
                             )
                     {
-                        //TODO: Wall
+                        //Wall
+                        matrixFuture[x, y] = WallChanges(x, y, matrix);
                     }
                     else
                     {
                         //Center
                         matrixFuture[x, y] = centerChanges(x, y, matrix, spinClock);
                     }
+
+                    //Fill the present matrix
+                    matrix = matrixFuture;
+
+                    //TODO: Output the future matrix
 
                     //ENd
                     Console.ReadKey();
@@ -82,23 +89,160 @@ namespace JuegoDeLaVida
         }
         static int centerChanges(int x, int y, int[,] matrixInput, int[,] spinClock)
         {
-            int alive = 0, xToLook, yToLook, cellState = 0;            
+            int alive = 0, xToLook, yToLook, cellState = 0, memAlive=0;            
             //Read cell state
             cellState = matrixInput[x, y];
-
+            
             //Count alive cells
             for (int i = 0; i < spinClock.Length; i++)
-            {
-                //xToLook = spinClock[i, 0] + x;
-                //yToLook = spinClock[i, 1] + y;
-                //if (matrixInput[xToLook, yToLook] == 1)
-                //{
-                //    alive++;
-                //}
-
-                alive = countAlive(spinClock, x, y, i);
+            {              
+                alive = CountAlive(spinClock, x, y, i,matrixInput);
+                memAlive += alive;
             }
             //Dead rules
+            cellState = UpdateCellState(cellState, memAlive);
+            return cellState;
+        }
+
+        static int VertexChanges(int x, int y, int[,] matrixInput, int [,] spinClock) 
+        {
+            // Matrix always is square
+            int alive = 0, cellState = 0,memAlive =0;
+            int n = matrixInput.GetLength(0);
+            int[,] miniSpinClock = new int[3, 2] {
+                {-1,0}
+                , {-1, -1}
+                , { 0,-1}
+            };
+
+            if (x == 0 && y == 0) 
+            {
+                //Top left
+                for (int i = 3; i <= 5; i++)
+                {                    
+                    alive = CountAlive(spinClock, x, y, i, matrixInput);
+                    memAlive += alive;
+                }   
+            }
+            else if (x == n && y == 0)
+            {
+                //Top right
+                for (int i = 5; i <= 7; i++)
+                {
+                    alive = CountAlive(spinClock, x, y, i, matrixInput);
+                    memAlive += alive;
+                }
+            }
+            else if (x == 0 && y == n)
+            {
+                //Bottom left
+                for (int i = 1; i <= 3; i++)
+                {
+                    alive = CountAlive(spinClock, x, y, i, matrixInput);
+                    memAlive += alive;
+                }
+            } 
+            else
+            {
+                //Bottom right 
+                //Sequence 7,0 and 1  __Error here? 
+                for (int i = 0; i <= 2; i++)
+                {
+                    alive = CountAlive(miniSpinClock, x, y, i, matrixInput);
+                    memAlive += alive;
+                }
+            }
+            //Dead rules
+            cellState = UpdateCellState(cellState, memAlive);
+            return cellState;
+        }
+
+        static int WallChanges(int x, int y, int[,] matrixInput)
+        {
+            int alive = 0, cellState = 0, memAlive = 0;
+            int n = matrixInput.GetLength(0);
+            int[,] spinClock = new int[8, 2] {
+                { -1,1}
+                , { 0, 1}
+                , { 1,1}
+                , { 1,0}
+                , { 1,-1}
+                , { 0,-1}
+                , { -1,-1}
+                , { -1,0}
+            };
+
+            if (y == 0 && (x != 0 || x != n)) 
+            { 
+                //Top
+                for (int i = 3; i <= 7; i++)
+                {
+                    alive = CountAlive(spinClock, x, y, i, matrixInput);
+                    memAlive += alive;
+                } 
+            }
+            else if(x == n && (y != 0 || y != n)) 
+            {
+                //Right 
+                int[,] spinClockRight = new int[5, 2] {
+                     { 0,-1}
+                    , { -1,-1}
+                    , { -1,0}
+                    , { -1,1}
+                    , { 0, 1}
+                };
+                for (int i = 0; i <= 4; i++)
+                {
+                    alive = CountAlive(spinClock, x, y, i, matrixInput);
+                    memAlive += alive;
+                }
+            }            
+            else if (y == n && (x != 0 || x != n))
+            {
+                 //Bottom
+                 int[,] spinClockBottom = new int[5, 2] {
+                       { -1,0}
+                    , {-1,1}
+                    , { 0,1}
+                    , { 1,1}
+                    , { 1,0}
+                    };
+                 for (int i = 0; i <= 4; i++)
+                    {
+                        alive = CountAlive(spinClock, x, y, i, matrixInput);
+                        memAlive += alive;
+                    }
+                }
+            else 
+            {
+                //Left
+                for (int i = 1; i <= 5; i++)
+                {
+                    alive = CountAlive(spinClock, x, y, i, matrixInput);
+                    memAlive += alive;
+                }
+            }
+
+            //Dead rules
+            cellState = UpdateCellState(cellState, memAlive);
+                return cellState;
+            
+        }
+
+        static int CountAlive(int [,] spinClock, int x, int y, int i, int [,] matrixInput)
+        {
+            int alive = 0;
+            int xToLook = spinClock[i, 0] + x;
+            int yToLook = spinClock[i, 1] + y;
+            if (matrixInput[xToLook, yToLook] == 1)
+            {
+                alive++;
+            }
+            return alive;
+        }
+
+        static int UpdateCellState(int cellState, int alive)
+        {
             if (cellState == 1)
             {
                 //Alive rules
@@ -128,65 +272,9 @@ namespace JuegoDeLaVida
                     cellState = 1; // live 
                 }
             }
+
             return cellState;
-        }
-
-        static int vertexChanges(int x, int y, int[,] matrixInput, int [,] spinClock) 
-        {
-            // Matrix always is square
-            int alive = 0, xToLook, yToLook, cellState = 0;
-            int n = matrixInput.GetLength(0);  
-            
-            if (x == 0 && y == 0) 
-            {
-                //Top left
-                for (int i = 3; i <= 5; i++)
-                {
-                    //xToLook = spinClock[j, 0] + x;
-                    //yToLook = spinClock[j, 1] + y;
-                    //if (matrixInput[xToLook, yToLook] == 1)
-                    //    {
-                    //        alive++;
-                    //    }
-                    alive = countAlive(spinClock, x, y, i);
-
-                }   
-            }
-            else if (x == n && y == 0)
-            {
-                //Top right
-                for (int i = 5; i <= 7; i++)
-                {
-                    alive = countAlive(spinClock, x, y, i);
-                }
-            }
-            else if (x == 0 && y == n)
-            {
-                //Bottom left
-                for (int i = 1; i <= 3; i++)
-                {
-                    alive = countAlive(spinClock, x, y, i);
-                }
-            } 
-            else
-            {
-                //Bottom right 
-                //Manual sequence 7,0 and 1                
-            }
-                return 0;
-        }
-
-        static int countAlive(int [,] spinClock, int x, int y, int i)
-        {
-            int xToLook = spinClock[i, 0] + x;
-            int yToLook = spinClock[i, 1] + y;
-            if (matrixInput[xToLook, yToLook] == 1)
-            {
-                alive++;
-            }
-            return alive;
-        }
-        
+        }        
     }
 
 }

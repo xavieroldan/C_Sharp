@@ -77,12 +77,10 @@ namespace Clases
             this.color = color;
         }
 
-        public Window(int width)
-        {
-            this.width = width;
-            this.height = 20;
-            this.color = "rojo";
-        }
+        //Re-use constructor
+        public Window(int width) : this (width , 20 , "rojo") {}
+
+        public Window(string color) : this(33) { }
 
 
 

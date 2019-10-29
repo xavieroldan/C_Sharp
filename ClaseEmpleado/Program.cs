@@ -34,7 +34,7 @@ namespace ClaseEmpleado
             days = Convert.ToInt32(Console.ReadLine());
 
             Console.WriteLine("{0} cobrará por {1} días trabajados {2:F2} €"
-                , juan.nombre
+                , juan.Nombre
                 , days
                 , juan.CalcularSueldo(days));
 

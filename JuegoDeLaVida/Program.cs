@@ -13,11 +13,21 @@ namespace JuegoDeLaVida
             int n = 8;
             int[,] matrix = new int[n, n];
             int[,] matrixFuture = new int[n, n];
+            int[,] spinClock = new int[8, 2] {
+                {-1,-1}
+                , {0, -1}
+                , { 1,-1}
+                , { 1,0}
+                , { 1,1}
+                , { 0,1}
+                , { -1,1}
+                , { -1,0}
+            };
             Random rnd = new Random();
             string cell = "@ ";
 
-            //Game of Life
-            //Matrix random full
+            //---------------------------------Game of Life-------------------------------------
+            //Matrix random fill
             for (int i = 0; i < n; i++)
             {
                 for (int j = 0; j < n; j++)
@@ -30,11 +40,12 @@ namespace JuegoDeLaVida
                 Console.Write("\n");
             }
 
-            //While
+            //TODO: While to infinite execution
 
             //Generate future matrix
             matrixFuture = matrix;
             //Read the matrix
+
             //i row // j column
 
             for (int x = 0; x < n; x++)
@@ -45,8 +56,8 @@ namespace JuegoDeLaVida
 
                     if (x == 0 && y == 0 || x == n && y == 0 || x == 0 && y == n || x == n & y == n)
                     {
-                        //Vertex
-
+                        //TODO: Vertex
+                        matrixFuture[x, y] = vertexChanges(x, y, matrix);
 
                     }
                     else if (
@@ -56,46 +67,36 @@ namespace JuegoDeLaVida
                         || y == n && (x != 0 || x != n)
                             )
                     {
-                        //Wall
-
+                        //TODO: Wall
                     }
                     else
                     {
                         //Center
-                        matrixFuture[x, y] = centerChanges(x, y, matrix);
+                        matrixFuture[x, y] = centerChanges(x, y, matrix, spinClock);
                     }
-
 
                     //ENd
                     Console.ReadKey();
                 }
             }
         }
-        static int centerChanges(int x, int y, int[,] matrixInput)
+        static int centerChanges(int x, int y, int[,] matrixInput, int[,] spinClock)
         {
-            int alive = 0, xToLook, yToLook, cellState = 0;
-            int[,] spinClock = new int[8, 2] {
-                {-1,-1}
-                , {0, -1}
-                , { 1,-1}
-                , { 1,0}
-                , { 1,1}
-                , { 0,1}
-                , { -1,1}
-                , { -1,0}
-            };
+            int alive = 0, xToLook, yToLook, cellState = 0;            
             //Read cell state
             cellState = matrixInput[x, y];
 
             //Count alive cells
             for (int i = 0; i < spinClock.Length; i++)
             {
-                xToLook = spinClock[i, 0] + x;
-                yToLook = spinClock[i, 1] + y;
-                if (matrixInput[xToLook, yToLook] == 1)
-                {
-                    alive++;
-                }
+                //xToLook = spinClock[i, 0] + x;
+                //yToLook = spinClock[i, 1] + y;
+                //if (matrixInput[xToLook, yToLook] == 1)
+                //{
+                //    alive++;
+                //}
+
+                alive = countAlive(spinClock, x, y, i);
             }
             //Dead rules
             if (cellState == 1)
@@ -130,39 +131,25 @@ namespace JuegoDeLaVida
             return cellState;
         }
 
-        static int vertexChanges(int x, int y, int[,] matrixInput) 
+        static int vertexChanges(int x, int y, int[,] matrixInput, int [,] spinClock) 
         {
             // Matrix always is square
             int alive = 0, xToLook, yToLook, cellState = 0;
-            int n = matrixInput.GetLength(0);
-            int[,] spinClock = new int[8, 2] {
-                {-1,-1}
-                , {0, -1}
-                , { 1,-1}
-                , { 1,0}
-                , { 1,1}
-                , { 0,1}
-                , { -1,1}
-                , { -1,0}
-            };
-
+            int n = matrixInput.GetLength(0);  
             
             if (x == 0 && y == 0) 
             {
                 //Top left
                 for (int i = 3; i <= 5; i++)
                 {
-                    //TODO: put all this FShit in a function
-                    //Count alive cells
-                    for (int j = 0; j < spinClock.Length; j++)
-                    {
-                        xToLook = spinClock[j, 0] + x;
-                        yToLook = spinClock[j, 1] + y;
-                        if (matrixInput[xToLook, yToLook] == 1)
-                        {
-                            alive++;
-                        }
-                    }
+                    //xToLook = spinClock[j, 0] + x;
+                    //yToLook = spinClock[j, 1] + y;
+                    //if (matrixInput[xToLook, yToLook] == 1)
+                    //    {
+                    //        alive++;
+                    //    }
+                    alive = countAlive(spinClock, x, y, i);
+
                 }   
             }
             else if (x == n && y == 0)
@@ -170,7 +157,7 @@ namespace JuegoDeLaVida
                 //Top right
                 for (int i = 5; i <= 7; i++)
                 {
-
+                    alive = countAlive(spinClock, x, y, i);
                 }
             }
             else if (x == 0 && y == n)
@@ -178,7 +165,7 @@ namespace JuegoDeLaVida
                 //Bottom left
                 for (int i = 1; i <= 3; i++)
                 {
-
+                    alive = countAlive(spinClock, x, y, i);
                 }
             } 
             else
@@ -188,6 +175,18 @@ namespace JuegoDeLaVida
             }
                 return 0;
         }
+
+        static int countAlive(int [,] spinClock, int x, int y, int i)
+        {
+            int xToLook = spinClock[i, 0] + x;
+            int yToLook = spinClock[i, 1] + y;
+            if (matrixInput[xToLook, yToLook] == 1)
+            {
+                alive++;
+            }
+            return alive;
+        }
+        
     }
 
 }

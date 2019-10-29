@@ -11,6 +11,11 @@ namespace EjercicioFacebook
         static void Main(string[] args)
         {
             Facebook pepe = new Facebook("pepe");
+
+            Console.WriteLine(pepe.Name);
+            Console.WriteLine(pepe.Age);
+            Console.WriteLine(pepe.Password);
+
             pepe.Password = "1111";
             pepe.Age = 55;
 
@@ -18,6 +23,11 @@ namespace EjercicioFacebook
             Console.WriteLine(pepe.Age);
             Console.WriteLine(pepe.Password);
 
+
+
+
+
+            //End
             Console.ReadKey();
         }
     }

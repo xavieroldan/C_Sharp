@@ -10,7 +10,7 @@ namespace JuegoDeLaVida
     {
         static void Main(string[] args)
         {
-            int n = 8;
+            int n = 30, k = (n-1);
             int[,] matrix = new int[n, n];
             int[,] matrixFuture = new int[n, n];
             int[,] spinClock = new int[8, 2] {
@@ -56,20 +56,20 @@ namespace JuegoDeLaVida
                     {
                         //Search the position
 
-                        if (x == 0 && y == 0 || x == n && y == 0 || x == 0 && y == n || x == n & y == n)
+                        if (x == 0 && y == 0 || x == k && y == 0 || x == 0 && y == k || x == k & y == k)
                         {
                             //Vertex
-                            matrixFuture[x, y] = VertexChanges(x, y, matrix, spinClock);
+                            matrixFuture[x, y] = VertexChanges(x, y, matrix, spinClock, k);
                         }
                         else if (
-                              x == 0 && (y != 0 || y != n)
-                            || x == n && (y != 0 || y != n)
-                            || y == 0 && (x != 0 || x != n)
-                            || y == n && (x != 0 || x != n)
+                              x == 0 && (y != 0 || y != k)
+                            || x == k && (y != 0 || y != k)
+                            || y == 0 && (x != 0 || x != k)
+                            || y == k && (x != 0 || x != k)
                                 )
                         {
                             //Wall
-                            matrixFuture[x, y] = WallChanges(x, y, matrix);
+                            matrixFuture[x, y] = WallChanges(x, y, matrix,spinClock,k);
                         }
                         else
                         {
@@ -96,6 +96,7 @@ namespace JuegoDeLaVida
                     Console.Write("\n");
                 }
 
+                System.Threading.Thread.Sleep(500);
             }
 
         }
@@ -106,7 +107,7 @@ namespace JuegoDeLaVida
             cellState = matrixInput[x, y];
             
             //Count alive cells
-            for (int i = 0; i < spinClock.Length; i++)
+            for (int i = 0; i < spinClock.GetLength(0); i++)
             {              
                 alive = CountAlive(spinClock, x, y, i,matrixInput);
                 memAlive += alive;
@@ -116,7 +117,7 @@ namespace JuegoDeLaVida
             return cellState;
         }
 
-        static int VertexChanges(int x, int y, int[,] matrixInput, int [,] spinClock) 
+        static int VertexChanges(int x, int y, int[,] matrixInput, int [,] spinClock, int k) 
         {
             // Matrix always is square
             int alive = 0, cellState = 0,memAlive =0;
@@ -136,7 +137,7 @@ namespace JuegoDeLaVida
                     memAlive += alive;
                 }   
             }
-            else if (x == n && y == 0)
+            else if (x == k && y == 0)
             {
                 //Top right
                 for (int i = 5; i <= 7; i++)
@@ -145,7 +146,7 @@ namespace JuegoDeLaVida
                     memAlive += alive;
                 }
             }
-            else if (x == 0 && y == n)
+            else if (x == 0 && y == k)
             {
                 //Bottom left
                 for (int i = 1; i <= 3; i++)
@@ -169,22 +170,12 @@ namespace JuegoDeLaVida
             return cellState;
         }
 
-        static int WallChanges(int x, int y, int[,] matrixInput)
+        static int WallChanges(int x, int y, int[,] matrixInput, int[,] spinClock,int k)
         {
             int alive = 0, cellState = 0, memAlive = 0;
-            int n = matrixInput.GetLength(0);
-            int[,] spinClock = new int[8, 2] {
-                { -1,1}
-                , { 0, 1}
-                , { 1,1}
-                , { 1,0}
-                , { 1,-1}
-                , { 0,-1}
-                , { -1,-1}
-                , { -1,0}
-            };
+            int n = matrixInput.GetLength(0);            
 
-            if (y == 0 && (x != 0 || x != n)) 
+            if (y == 0 && (x != 0 || x != k)) 
             { 
                 //Top
                 for (int i = 3; i <= 7; i++)
@@ -193,15 +184,15 @@ namespace JuegoDeLaVida
                     memAlive += alive;
                 } 
             }
-            else if(x == n && (y != 0 || y != n)) 
+            else if(x == k && (y != 0 || y != k)) 
             {
                 //Right 
                 int[,] spinClockRight = new int[5, 2] {
-                     { 0,-1}
-                    , { -1,-1}
-                    , { -1,0}
+                     { 0,1}
                     , { -1,1}
-                    , { 0, 1}
+                    , { -1,0}
+                    , { -1,-1}
+                    , { 0, -1}
                 };
                 for (int i = 0; i <= 4; i++)
                 {
@@ -209,14 +200,14 @@ namespace JuegoDeLaVida
                     memAlive += alive;
                 }
             }            
-            else if (y == n && (x != 0 || x != n))
+            else if (y == k && (x != 0 || x != k))
             {
                  //Bottom
                  int[,] spinClockBottom = new int[5, 2] {
                        { -1,0}
-                    , {-1,1}
-                    , { 0,1}
-                    , { 1,1}
+                    , {-1,-1}
+                    , { 0,-1}
+                    , { 1,-1}
                     , { 1,0}
                     };
                  for (int i = 0; i <= 4; i++)
@@ -288,6 +279,5 @@ namespace JuegoDeLaVida
             return cellState;
         }        
     }
-
 }
 

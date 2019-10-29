@@ -8,15 +8,17 @@ namespace FigurasClases
 {
     class Circulo
     {
-        double radio;
+        private double _Radio;
         public Circulo (double radio)
         {
-            this.radio = radio;
+            Radio = radio;
         }
+
+        public double Radio { get => _Radio; set => _Radio = value; }
 
         public double CalcArea ()
         {
-            return Math.PI * (Math.Pow(this.radio, 2));
+            return Math.PI * (Math.Pow(this.Radio, 2));
         }
         
     }

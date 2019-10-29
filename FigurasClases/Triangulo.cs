@@ -9,18 +9,21 @@ namespace FigurasClases
     class Triangulo
     {
 
-        double ba;
-        double alt;
+        private double _Ba;
+        private double _Alt;
 
         public Triangulo(double ba, double alt)
         {
-            this.ba = ba;
-            this.alt = alt;
+            Ba = ba;
+            Alt = alt;
         }
+
+        public double Ba { get => _Ba; set => _Ba = value; }
+        public double Alt { get => _Alt; set => _Alt = value; }
 
         public double CalcArea()
         {
-            return (ba * alt) / 2;
+            return (Ba * Alt) / 2;
         }
     }
 }

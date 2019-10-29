@@ -40,9 +40,13 @@ namespace ClaseEmpleado
 
             ClsEmpleado pepe = new ClsEmpleado("Pepe", 40);
 
+            //Usando el set
+            pepe.Nombre = "Paco";
 
+            //Usando el set
+            Console.WriteLine(pepe.Nombre);
 
-
+            pepe.
 
 
             //End

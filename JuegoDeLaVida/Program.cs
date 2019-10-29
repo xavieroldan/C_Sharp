@@ -41,55 +41,67 @@ namespace JuegoDeLaVida
                 Console.Write("\n");
             }
 
-            //TODO: While to infinite execution
-
-            //Generate future matrix
-            matrixFuture = matrix;
-            //Read the matrix
-
-            //i row // j column
-
-            for (int x = 0; x < n; x++)
+            //While to infinite execution
+            while (true)
             {
+                //Generate future matrix
+                matrixFuture = matrix;
+                //Read the matrix
+
+                //i row // j column
+
                 for (int y = 0; y < n; y++)
                 {
-                    //Search the borders
-
-                    if (x == 0 && y == 0 || x == n && y == 0 || x == 0 && y == n || x == n & y == n)
+                    for (int x = 0; x < n; x++)
                     {
-                        //Vertex
-                        matrixFuture[x, y] = VertexChanges(x, y, matrix,spinClock);
+                        //Search the position
 
+                        if (x == 0 && y == 0 || x == n && y == 0 || x == 0 && y == n || x == n & y == n)
+                        {
+                            //Vertex
+                            matrixFuture[x, y] = VertexChanges(x, y, matrix, spinClock);
+                        }
+                        else if (
+                              x == 0 && (y != 0 || y != n)
+                            || x == n && (y != 0 || y != n)
+                            || y == 0 && (x != 0 || x != n)
+                            || y == n && (x != 0 || x != n)
+                                )
+                        {
+                            //Wall
+                            matrixFuture[x, y] = WallChanges(x, y, matrix);
+                        }
+                        else
+                        {
+                            //Center
+                            matrixFuture[x, y] = centerChanges(x, y, matrix, spinClock);
+                        }
+
+                                               
                     }
-                    else if (
-                          x == 0 && (y != 0 || y != n)
-                        || x == n && (y != 0 || y != n)
-                        || y == 0 && (x != 0 || x != n)
-                        || y == n && (x != 0 || x != n)
-                            )
-                    {
-                        //Wall
-                        matrixFuture[x, y] = WallChanges(x, y, matrix);
-                    }
-                    else
-                    {
-                        //Center
-                        matrixFuture[x, y] = centerChanges(x, y, matrix, spinClock);
-                    }
-
-                    //Fill the present matrix
-                    matrix = matrixFuture;
-
-                    //TODO: Output the future matrix
-
-                    //ENd
-                    Console.ReadKey();
                 }
+                //Fill the present matrix
+                matrix = matrixFuture;
+
+                //Output the future matrix
+                Console.Clear();
+
+                for (int i = 0; i < n; i++)
+                {
+                    for (int j = 0; j < n; j++)
+                    {
+                        if (matrix[i, j] == 1) { Console.Write(cell); }
+                        else { Console.Write("  "); }
+                    }
+                    Console.Write("\n");
+                }
+
             }
+
         }
         static int centerChanges(int x, int y, int[,] matrixInput, int[,] spinClock)
         {
-            int alive = 0, xToLook, yToLook, cellState = 0, memAlive=0;            
+            int alive = 0, cellState = 0, memAlive=0;            
             //Read cell state
             cellState = matrixInput[x, y];
             
@@ -193,7 +205,7 @@ namespace JuegoDeLaVida
                 };
                 for (int i = 0; i <= 4; i++)
                 {
-                    alive = CountAlive(spinClock, x, y, i, matrixInput);
+                    alive = CountAlive(spinClockRight, x, y, i, matrixInput);
                     memAlive += alive;
                 }
             }            
@@ -209,7 +221,7 @@ namespace JuegoDeLaVida
                     };
                  for (int i = 0; i <= 4; i++)
                     {
-                        alive = CountAlive(spinClock, x, y, i, matrixInput);
+                        alive = CountAlive(spinClockBottom, x, y, i, matrixInput);
                         memAlive += alive;
                     }
                 }

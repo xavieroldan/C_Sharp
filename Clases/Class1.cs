@@ -9,6 +9,10 @@ namespace Clases
     class clsCirculo
     {
         public double radio;
+        
+        //constructor público y no devuelve nada
+        public clsCirculo(int r) { this.radio = r; }
+
         public double calcularArea ()
         {
             return Math.PI * Math.Pow(radio, 2);

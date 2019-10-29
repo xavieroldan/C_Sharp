@@ -17,24 +17,39 @@ namespace Clases
             ////cambio desde la instancia de la clase
             //myWindow.width = 25;
 
-            //clsCirculo circulo1 = new clsCirculo();
+            //clsCirculo circulo1 = new clsCirculo(5);
             //circulo1.radio = 5;
-            //Console.WriteLine("El área de mi circulo es {0:F2}",circulo1.calcularArea());
+            //Console.WriteLine("El área de mi circulo es {0:F2}", circulo1.calcularArea());
 
-            clsCuentaBancaria myCuenta = new clsCuentaBancaria();
-            // ver el saldo
-            Console.WriteLine(myCuenta.mostrarSaldo());
-            //ingresar saldo
-            myCuenta.ingresarSaldo(1000);
-            //ver el saldo
-            Console.WriteLine(myCuenta.mostrarSaldo());
-            //sacar saldo
-            myCuenta.sacarSaldo(500);
-            Console.WriteLine(myCuenta.mostrarSaldo());
-            //cambiar tipo a plazo fijo
-            myCuenta.tipo = "Plazo fijo";
-            Console.WriteLine(myCuenta.tipo);
+            //clsCuentaBancaria myCuenta = new clsCuentaBancaria();
+            //// ver el saldo
+            //Console.WriteLine("Tu saldo es :"+myCuenta.MostrarSaldo());
+            ////ingresar saldo
+            //myCuenta.IngresarSaldo(1000);
+            ////ver el saldo
+            //Console.WriteLine("Tu saldo es :"+myCuenta.MostrarSaldo());
+            ////sacar saldo
+            //myCuenta.SacarSaldo(500);
+            //Console.WriteLine("Tu saldo es :"+myCuenta.MostrarSaldo());
+            ////cambiar tipo a plazo fijo
+            //myCuenta.tipo = "Plazo fijo";
+            //Console.WriteLine("Tu tipo de cuenta es :"+myCuenta.tipo);
 
+
+            //ventanas
+            //Window ventana1 = new Window();
+            //Window ventana2 = new Window(20,30,"verde");
+            //Window ventana3 = new Window(25);
+
+            //Cuenta por defecto
+            clsCuentaBancaria cuenta2 = new clsCuentaBancaria("Pepe",1);
+            Console.WriteLine
+                (
+                    "ID: "+cuenta2.numero.ToString()
+                    +"\nNombre titular: "+cuenta2.titular
+                    + "\nTipo: " + cuenta2.tipo
+                    + "\nSaldo: " + cuenta2.saldo
+                );
             //End
             Console.ReadKey();
         }
@@ -48,7 +63,35 @@ namespace Clases
         public string color = "rojo";
 
         //Constructor
-        public Window() { }
+        public Window() 
+        {
+            this.width = 15;
+            this.height = 20;
+            this.color = "rojo";
+        }
+
+        public Window(int width, int height, string color)
+        {
+            this.width = width;
+            this.height = height;
+            this.color = color;
+        }
+
+        public Window(int width)
+        {
+            this.width = width;
+            this.height = 20;
+            this.color = "rojo";
+        }
+
+
+
+
+
+
+
+
+
 
         //Methods
         public void cerrar() 

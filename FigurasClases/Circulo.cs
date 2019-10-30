@@ -20,6 +20,11 @@ namespace FigurasClases
         {
             return Math.PI * (Math.Pow(this.Radio, 2));
         }
+
+        public double GetRadio ()
+        {
+            return Radio;
+        }
         
     }
 }

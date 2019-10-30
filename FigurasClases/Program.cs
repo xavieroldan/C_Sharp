@@ -63,7 +63,8 @@ namespace FigurasClases
                         Console.WriteLine("Elige una opción correcta (1-2-3)");
                         isExiting = false;
                         break;
-                }    
+                }
+
             }
             
         }

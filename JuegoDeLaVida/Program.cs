@@ -74,7 +74,7 @@ namespace JuegoDeLaVida
                         else
                         {
                             //Center
-                            matrixFuture[x, y] = centerChanges(x, y, matrix, spinClock);
+                            matrixFuture[x, y] = CenterChanges(x, y, matrix, spinClock);
                         }
 
                                                
@@ -100,7 +100,7 @@ namespace JuegoDeLaVida
             }
 
         }
-        static int centerChanges(int x, int y, int[,] matrixInput, int[,] spinClock)
+        static int CenterChanges(int x, int y, int[,] matrixInput, int[,] spinClock)
         {
             int alive = 0, cellState = 0, memAlive=0;            
             //Read cell state

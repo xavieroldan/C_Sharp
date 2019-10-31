@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		label{ display:block; margin:10px;}
+	</style>
+</head>
+<body>
+	<form action="testCuenta.php" method="get">
+		<label for="titular">
+			Titular:<input type="text" id="titular" name="titular"/>
+		</label>
+		<label for="dni">
+			DNI:<input type="text" id="dni" name="dni"/>
+		</label>
+		<label for="tipocuenta">
+			<select id="tipocuenta" name="tipocuenta">
+				<option value="corriente">Corriente</option>
+				<option value="ahorro">Ahorro</option>
+			</select>
+		</label>
+	<label for=""><input type="submit" value="Enviar"/></label>
+	</form>
+</body>
+</html>

@@ -1,0 +1,34 @@
+La forma de calcular el dígito de control de una cuenta bancaria es esta:
+
+La primera cifra de la entidad se multiplica por 4.
+La segunda cifra de la entidad se multiplica por 8.
+La tercera cifra de la entidad se multiplica por 5.
+La cuarta cifra de la entidad se multiplica por 10.
+
+La primera cifra de la oficina se multiplica por 9.
+La segunda cifra de la oficina se multiplica por 7.
+La tercera cifra de la oficina se multiplica por 3.
+La cuarta cifra de la oficina se multiplica por 6.
+
+Se suman todos los resultados obtenidos.
+Se divide entre 11 y nos quedamos con el resto de la división.
+A 11 le quitamos el resto anterior, y ese el el primer dígito de control,
+con la salvedad de que si nos da 10, el dígito es 1,
+y si nos da 11, el dígito es 0.
+
+Para obtener el segundo dígito de control:
+La primera cifra de la cuenta se multiplica por 1
+La segunda cifra de la cuenta se multiplica por 2
+La tercera cifra de la cuenta se multiplica por 4
+La cuarta cifra de la cuenta se multiplica por 8
+La quinta cifra de la cuenta se multiplica por 5
+La sexta cifra de la cuenta se multiplica por 10
+La séptima cifra de la cuenta se multiplica por 9
+La octava cifra de la cuenta se multiplica por 7
+La novena cifra de la cuenta se multiplica por 3
+La décima cifra de la cuenta se multiplica por 6
+Se suman todos los resultados obtenidos.
+Se divide entre 11 y nos quedamos con el resto de la división.
+A 11 le quitamos el resto anterior, y ese el el segundo dígito de control,
+con la salvedad de que si nos da 10, el dígito es 1,
+y si nos da 11 el dígito es 0.

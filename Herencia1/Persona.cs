@@ -23,9 +23,10 @@ namespace Herencia1
         public string Apellido { get => _Apellido; set => _Apellido = value; }
         public string Dni { get => _Dni; set => _Dni = value; }
 
-        public void Hablar()
+        
+        public  void Hablar()
         {
-            Console.WriteLine("Bla,bla,bla...");
+            Console.WriteLine("Soy persona y Bla,bla,bla...");
         }
     }
 }

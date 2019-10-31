@@ -16,7 +16,13 @@ namespace Herencia1
 
             Persona cliente2 = new Cliente("Pipo", "López", "Méndez",55,"Lolo","Murcia");
 
-            Console.WriteLine(cliente2.GetType());
+            Persona personaCasteada = cliente1;
+
+            Console.WriteLine("Soy un "+ personaCasteada.GetType().Name);
+            personaCasteada.Hablar();// Uso el new como persona casteada (padre)
+
+            Console.WriteLine("Soy un " + cliente1.GetType().Name);
+            cliente1.Hablar();// Uso el método como cliente (hija)
 
             Console.ReadKey();
         }

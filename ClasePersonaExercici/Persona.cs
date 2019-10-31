@@ -97,7 +97,7 @@ namespace ClasePersonaExercici
             Random rnd = new Random();
             string dni = string.Empty;
             string letter = "TRWAGMYFPDXBNJZSQVHLCKE";
-            for (int i = 0; i < 8; i++){dni += rnd.Next(0, 9);}
+            for (int i = 0; i < 8; i++){dni += rnd.Next(-1, 10);}
             dni += letter.ToCharArray().ElementAt(Convert.ToInt32(dni)%23);
             return dni;
         }

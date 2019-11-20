@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CrearDigitoControl
+namespace ProyectoHErenciaIII
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Account myAccount = new Account();
-            Console.WriteLine(myAccount.GetAccount());
+            ClsEstudiante estudiante1 = new ClsEstudiante("Laura","Martinez","s@gmail.com",12346,"UB");
+            Console.WriteLine(estudiante1.VerInfo());//da problemas por el protected
             Console.ReadKey();
         }
     }

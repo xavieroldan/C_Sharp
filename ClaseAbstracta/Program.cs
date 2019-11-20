@@ -4,14 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CrearDigitoControl
+namespace ClaseAbstracta
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Account myAccount = new Account();
-            Console.WriteLine(myAccount.GetAccount());
+
+            Coche MiCoche = new Coche(500);
+            MiCoche.Enganchar();
+            MiCoche.Arrancar();
+            MiCoche.Soltar();
+            Console.WriteLine("Peso:"+MiCoche.GetPeso());
             Console.ReadKey();
         }
     }

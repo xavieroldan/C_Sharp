@@ -1,5 +1,11 @@
 La forma de calcular el dígito de control de una cuenta bancaria es esta:
 
+https://www.bbva.com/es/significan-los-numeros-las-cuentas-cuentas-corrientes-codigo-cuenta-cliente/
+Cuatro primeros dígitos: código de la entidad financiera asignado por el Banco de España.
+Cuatro siguientes dígitos (posiciones 5 a 8): código de oficina de la entidad financiera en la que se haya formalizado el contrato.
+Dos dígitos siguientes (posiciones 9 y 10): <!--código de control-->, un algoritmo matemático que da validez e integridad al número de cuenta.
+Últimos 10 dígitos: número de cuenta interno, asignado por la entidad y a su libre criterio de clasificación y control.
+
 La primera cifra de la entidad se multiplica por 4.
 La segunda cifra de la entidad se multiplica por 8.
 La tercera cifra de la entidad se multiplica por 5.

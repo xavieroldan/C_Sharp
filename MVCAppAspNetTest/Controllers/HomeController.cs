@@ -23,7 +23,7 @@ namespace AppAspNetTest.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Test()
         {
             return View();
         }

@@ -14,9 +14,9 @@
             <button>create</button>
             <p class="message">Already registered? <a href="#">Sign In</a></p>
         </form>*@
-            <form id="form1" class="login-form" action="/Login/LoginUser" method="post">
-                <input name="User" type="text" id="User" placeholder="usuario" />
-                <input name="Password" type="text" id="Password" placeholder="password" />
+            <form id="form1" class="login-form" method="post" action="/Login/VerifyLogin">
+                <input name="name" type="text" id="name" placeholder="usuario" />
+                <input name="pass" type="text" id="pass" placeholder="password" />
                 <button type="submit" form="form1" value="Submit">login</button>
                 @*<p class="message">Not registered? <a href="#">Create an account</a></p>*@
             </form>

@@ -8,30 +8,28 @@ using MVCAppAspNetTest.Models;
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace MVCAppAspNetTest.Controllers
-{
-    public class Login : Controller
+{   
+    public class LoginController : Controller
     {
-        // GET: /<controller>/
-        public IActionResult Index()
-        {
-            return View();
-        }
-        //GET: / Test
-        public string Test()
+          public string Test()
         {
             return "Connection OK";
         }
 
         [HttpPost]
-        public string LoginUser(LoginModel user)
+        public string VerifyLogin()
         {
-            if(user.User=="root" && user.Password=="toor")
+            LoginModel user = new LoginModel();
+            user.name = HttpContext.Request.Form["name"];
+            user.password = HttpContext.Request.Form["pass"];
+
+            if (user.name == "root" && user.password == "toor")
             {
                 return "Logged";
             }
             else
             {
-                return "NO logged";
+                return "No Logged";
             }
         }
     }

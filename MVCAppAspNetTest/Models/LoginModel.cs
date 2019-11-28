@@ -9,6 +9,8 @@ namespace MVCAppAspNetTest.Models
     {
         public string name { get; set; }
         public string password { get; set; }
-       
+        public int errorLoginCount { get; set; }           
+        public bool isLogged { get; set; }
+        public bool isLocked { get; set; }
     }
 }

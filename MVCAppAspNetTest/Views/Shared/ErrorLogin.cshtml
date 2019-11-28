@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "ErrorLogin";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ErrorLogin</title>
+</head>
+<body>
+    <h1>Error logging</h1>
+    <div>Try again</div>
+    <div>
+        <input type="button" value="To Login" onclick=" location.href='@Url.Action("Index","Home")'" />
+    </div>
+    <div>
+        <input type="button" value="First screen" onclick=" location.href='@Url.Action("FirstScreen","Login")'" />
+    </div>
+    <div>
+        <input type="button" value="LockedUser" onclick=" location.href='@Url.Action("LockedUser","Login")'" />
+    </div>
+</body>
+</html>

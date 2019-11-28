@@ -17,20 +17,62 @@ namespace MVCAppAspNetTest.Controllers
         }
 
         [HttpPost]
-        public string VerifyLogin()
+        public IActionResult VerifyLogin()
         {
             LoginModel user = new LoginModel();
             user.name = HttpContext.Request.Form["name"];
             user.password = HttpContext.Request.Form["pass"];
+            int logTryes = user.errorLoginCount;
 
             if (user.name == "root" && user.password == "toor")
             {
-                return "Logged";
+                user.isLogged = true;
+                //save user to db
+                return View("FirstScreen");
             }
             else
             {
-                return "No Logged";
+                user.isLogged = false;
+                if(logTryes==0|| logTryes==null)
+                {
+                    user.errorLoginCount = 1;
+                }               
+                else
+                {
+                    int count = user.errorLoginCount;
+                    user.errorLoginCount += count;
+                    if (logTryes >= Tools.Constants.LogTryes)
+                        {
+                            user.isLocked = true;
+                            //save user to db
+                            return View("LockedUser");
+                        }
+                }
+                //save user to db
+                return View("ErrorLogin");
             }
         }
+
+        [HttpPost]
+        [HttpGet]
+        public IActionResult LogScreen()
+        {
+            return View("Index");
+        }
+
+        [HttpPost]
+        [HttpGet]
+        public IActionResult FirstScreen()
+        {
+            return View("FirstScreen");
+        }
+
+        [HttpPost]
+        [HttpGet]
+        public IActionResult LockedUser()
+        {
+            return View("LockedUser");
+        }
+
     }
 }

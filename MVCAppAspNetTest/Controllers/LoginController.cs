@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MVCAppAspNetTest.Clases;
 using MVCAppAspNetTest.Models;
+using MySql.Data.MySqlClient;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,44 +13,75 @@ namespace MVCAppAspNetTest.Controllers
 {   
     public class LoginController : Controller
     {
-          public string Test()
+        
+
+        public string Test()
         {
             return "Connection OK";
         }
 
         [HttpPost]
-        public IActionResult VerifyLogin()
+        public async Task<IActionResult> VerifyLogin()
         {
             LoginModel user = new LoginModel();
+            LoginModel logedUser = new LoginModel();
+            List<LoginModel> listUsers = new List<LoginModel>();
+            int logTryes = 0;
+            bool isPresentUser = false;
+
             user.name = HttpContext.Request.Form["name"];
             user.password = HttpContext.Request.Form["pass"];
-            int logTryes = user.errorLoginCount;
 
-            if (user.name == "root" && user.password == "toor")
+            try
             {
-                user.isLogged = true;
-                //save user to db
-                return View("FirstScreen");
+                UserContext context = HttpContext.RequestServices.GetService(typeof(UserContext)) as UserContext;
+                listUsers = await context.GetAllUsersAsync();
+            }
+            catch (Exception ex)
+            {
+                return View("Error");
+            }
+            
+            //Validate user
+            foreach (var item in listUsers)
+            {
+                if(item.name == user.name)
+                {
+                    isPresentUser = true;
+                    logedUser = item;
+                }
+            }
+
+            if (isPresentUser && user.name == logedUser.name && user.password == logedUser.password)
+            {                
+                //Is logged correctly
+                if(logedUser.isLocked)
+                {
+                    //Locked
+                    return View("LockedUser");
+                }
+                else
+                {
+                    //Logged correctly
+                    //update db : reset loged tryes
+                    logedUser.errorLogin = 0;
+                    UserContext context = HttpContext.RequestServices.GetService(typeof(UserContext)) as UserContext;
+                    context.UpdateAsync(logedUser);
+                    return View("FirstScreen");
+                }                
             }
             else
             {
-                user.isLogged = false;
-                if(logTryes==0|| logTryes==null)
+                //increasing one the login error tryes
+                logedUser.errorLogin++;
+                //Is locked now? =>Update user
+                if(logedUser.errorLogin>= Tools.Constants.LogTryes) 
                 {
-                    user.errorLoginCount = 1;
-                }               
-                else
-                {
-                    int count = user.errorLoginCount;
-                    user.errorLoginCount += count;
-                    if (logTryes >= Tools.Constants.LogTryes)
-                        {
-                            user.isLocked = true;
-                            //save user to db
-                            return View("LockedUser");
-                        }
+                    logedUser.isLocked = true;
                 }
-                //save user to db
+                //save user to db increasing one the tryes
+                UserContext context = HttpContext.RequestServices.GetService(typeof(UserContext)) as UserContext;
+                context.UpdateAsync(logedUser);
                 return View("ErrorLogin");
             }
         }

@@ -63,7 +63,7 @@ namespace MVCAppAspNetTest.Controllers
                 else
                 {
                     //Logged correctly
-                    //update db : reset loged tryes
+                    //update db : reset logged tries
                     logedUser.errorLogin = 0;
                     UserContext context = HttpContext.RequestServices.GetService(typeof(UserContext)) as UserContext;
                     context.UpdateAsync(logedUser);
@@ -72,14 +72,14 @@ namespace MVCAppAspNetTest.Controllers
             }
             else
             {
-                //increasing one the login error tryes
+                //increasing one the login error tries
                 logedUser.errorLogin++;
                 //Is locked now? =>Update user
                 if(logedUser.errorLogin>= Tools.Constants.LogTryes) 
                 {
                     logedUser.isLocked = true;
                 }
-                //save user to db increasing one the tryes
+                //save user to db increasing one the tries
                 UserContext context = HttpContext.RequestServices.GetService(typeof(UserContext)) as UserContext;
                 context.UpdateAsync(logedUser);
                 return View("ErrorLogin");

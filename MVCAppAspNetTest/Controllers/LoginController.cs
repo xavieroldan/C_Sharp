@@ -31,6 +31,9 @@ namespace MVCAppAspNetTest.Controllers
 
             user.name = HttpContext.Request.Form["name"];
             user.password = HttpContext.Request.Form["pass"];
+            user.errorLogin = 0;
+            user.isLocked = false;
+            user.userid = 0;
 
             try
             {
@@ -47,6 +50,7 @@ namespace MVCAppAspNetTest.Controllers
             {
                 if(item.name == user.name)
                 {
+                    //user exists
                     isPresentUser = true;
                     logedUser = item;
                 }
@@ -77,12 +81,13 @@ namespace MVCAppAspNetTest.Controllers
                 //Is locked now? =>Update user
                 if(logedUser.errorLogin>= Tools.Constants.LogTryes) 
                 {
-                    logedUser.isLocked = true;
+                    logedUser.isLocked = true;                    
                 }
                 //save user to db increasing one the tries
                 UserContext context = HttpContext.RequestServices.GetService(typeof(UserContext)) as UserContext;
                 context.UpdateAsync(logedUser);
-                return View("ErrorLogin");
+                if (logedUser.isLocked) { return View("LockedUser"); }
+                else { return View("ErrorLogin"); }                
             }
         }
 

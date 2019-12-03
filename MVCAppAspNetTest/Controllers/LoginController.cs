@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MVCAppAspNetTest.Clases;
 using MVCAppAspNetTest.Models;
+using MVCAppAspNetTest.Tools;
 using MySql.Data.MySqlClient;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -24,16 +25,16 @@ namespace MVCAppAspNetTest.Controllers
         public async Task<IActionResult> VerifyLogin()
         {
             LoginModel user = new LoginModel();
-            LoginModel logedUser = new LoginModel();
+            LoginModel loggedUser = new LoginModel();
             List<LoginModel> listUsers = new List<LoginModel>();
             int logTryes = 0;
             bool isPresentUser = false;
 
+            user.userid = 0;
             user.name = HttpContext.Request.Form["name"];
             user.password = HttpContext.Request.Form["pass"];
             user.errorLogin = 0;
             user.isLocked = false;
-            user.userid = 0;
 
             try
             {
@@ -52,42 +53,55 @@ namespace MVCAppAspNetTest.Controllers
                 {
                     //user exists
                     isPresentUser = true;
-                    logedUser = item;
+                    loggedUser = item;
                 }
             }
+            
 
-            if (isPresentUser && user.name == logedUser.name && user.password == logedUser.password)
+            if (isPresentUser && user.name == loggedUser.name && user.password == loggedUser.password)
             {                
                 //Is logged correctly
-                if(logedUser.isLocked)
+                if(loggedUser.isLocked)
                 {
-                    //Locked
+                    //Locked                    
+                    ViewData["MessageLocked"] = "The user "+ user.name + " is now locked.";
                     return View("LockedUser");
                 }
                 else
                 {
                     //Logged correctly
                     //update db : reset logged tries
-                    logedUser.errorLogin = 0;
+                    loggedUser.errorLogin = 0;
                     UserContext context = HttpContext.RequestServices.GetService(typeof(UserContext)) as UserContext;
-                    context.UpdateAsync(logedUser);
+                    await context.UpdateAsync(loggedUser);
+                    ViewData["MessageLoggedOk"] = loggedUser.name + " => Welcome to the system";
+                    MailSender mailSender = new MailSender();
+                    mailSender.sendEmail();
                     return View("FirstScreen");
                 }                
             }
             else
             {
                 //increasing one the login error tries
-                logedUser.errorLogin++;
+                loggedUser.errorLogin++;
                 //Is locked now? =>Update user
-                if(logedUser.errorLogin>= Tools.Constants.LogTryes) 
+                if(loggedUser.errorLogin>= Tools.Constants.LogTryes) 
                 {
-                    logedUser.isLocked = true;                    
+                    loggedUser.isLocked = true;                    
                 }
                 //save user to db increasing one the tries
                 UserContext context = HttpContext.RequestServices.GetService(typeof(UserContext)) as UserContext;
-                context.UpdateAsync(logedUser);
-                if (logedUser.isLocked) { return View("LockedUser"); }
-                else { return View("ErrorLogin"); }                
+                await context.UpdateAsync(loggedUser);
+                if (loggedUser.isLocked) 
+                {
+                    ViewData["MessageLocked"] = "The user " + user.name + " is now locked.";
+                    return View("LockedUser"); 
+                }
+                else 
+                {
+                    ViewData["MessageErrorLogin"] = "Keep! Error number " + loggedUser.errorLogin + " trying login.";
+                    return View("ErrorLogin"); 
+                }                
             }
         }
 
